@@ -1,0 +1,23 @@
+# k create ingress accounting-ingress --rule="accounting.internal.acme.com/*=accounting-service:80, tls=accounting-secret" -n t75 $do -o yaml
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: accounting-ingress
+  namespace: t75
+spec:
+  rules:
+  - host: accounting.internal.acme.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: accounting-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - accounting.internal.acme.com
+    secretName: accounting-secret
